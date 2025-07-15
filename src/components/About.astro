@@ -1,0 +1,38 @@
+---
+---
+
+<section id="about" class="section about">
+  <div class="container">
+    <h2 class="section-title">About Me</h2>
+    <div class="about-content">
+      <p>I'm a passionate designer and developer with a knack for creating user-friendly and visually appealing digital experiences. My work focuses on blending aesthetic design with robust functionality to deliver innovative solutions. I thrive on bringing ideas to life and continuously learning in the dynamic tech landscape.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #d1d5db;
+    text-shadow: 0 0 10px rgba(209, 213, 219, 0.2);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+  }
+
+  .about-content.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>

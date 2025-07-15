@@ -1,0 +1,27 @@
+---
+import DetailedArticle from "../../components/DetailedArticle.astro";
+import Header from "../../components/Header.astro";
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render, type CollectionEntry, getEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("articles");
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+const entry = await getEntry('articles', Astro.params.slug);
+
+if (!entry) {
+  throw new Error(`Could not find blog ${Astro.params.slug}`);
+}
+const { Content } = await render(entry);
+---
+
+<Layout title="Astro Blog - Articles Detail">
+  <Header />
+
+  <DetailedArticle {...entry}>
+    <Content/>
+  </DetailedArticle>
+</Layout>

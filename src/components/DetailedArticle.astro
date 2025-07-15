@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+
+type Props = CollectionEntry<'articles'>;
+const props = Astro.props;
+---
+<section class="section detailed-article">
+  <div class="container">
+    <div class="back-button">
+      <a href="/articles" class="btn btn-secondary">← Back to Blog</a>
+    </div>
+
+    <div class="article-content">
+      <div class="article-header">
+        <h2>{props?.data?.title}</h2>
+        <p class="article-date">Published: {props?.data?.date}</p>
+      </div>
+      <div class="article-body">
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>
