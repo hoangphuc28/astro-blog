@@ -1,0 +1,70 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Header from "../../components/Header.astro";
+import { getCollection } from "astro:content";
+import Pagination from "../../components/Pagination.astro";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+
+  const postsPerPage = 6; // Number of articles per page
+  const totalPages = Math.ceil(articles.length / postsPerPage);
+  const paths = [];
+
+  for (let i = 1; i <= totalPages; i++) {
+    const start = (i - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    const articlesForPage = articles.slice(start, end);
+
+    paths.push({
+      params: { page: i.toString() },
+      props: {
+        articlesForPage,
+        currentPage: i,
+        totalPages,
+      },
+    });
+  }
+
+  return paths;
+}
+
+const { articlesForPage, currentPage, totalPages } = Astro.props;
+---
+
+<Layout title="Astro Blog - Articles">
+  <Header />
+
+  <section id="blog" class="section blog-section">
+    <div class="container">
+      <h2 class="section-title">Latest Blog Articles</h2>
+      <p class="blog-intro">
+        Dive into my recent thoughts on design trends, tech insights, and
+        personal projects.
+      </p>
+      <div class="blog-grid">
+        {
+          articlesForPage.map((article) => (
+            <article class="article-card">
+              <h3 class="article-title">{article.data.title}</h3>
+              <p class="article-excerpt">{article.data.excerpt}</p>
+              <div class="article-footer">
+                <p class="article-date">Published: {article.data.date}</p>
+                <a href={`/articles/${article.slug}`} class="btn btn-details">
+                  Details
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <Pagination
+          maxPagesToShow={3}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          basePath="/articles"
+        />
+    </div>
+  </section>
+</Layout>

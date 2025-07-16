@@ -1,0 +1,191 @@
+---
+export const Props = {
+  maxPagesToShow: 5,
+  currentPage: 0,
+  totalPages: 0,
+  basePath: "",
+};
+
+const { currentPage, totalPages, basePath, maxPagesToShow } = Astro.props;
+
+const getPageLink = (page: number) => {
+  if (page === 1) {
+    return basePath.replace("/page", "");
+  }
+  return `${basePath}/${page}`;
+};
+
+// Logic to generate page numbers to display (e.g., current, prev 2, next 2, ellipses)
+const pageNumbers = [];
+
+if (totalPages <= maxPagesToShow + 2) {
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+} else {
+  pageNumbers.push(1);
+
+  let startPage = Math.max(2, currentPage - Math.floor(maxPagesToShow / 2));
+  let endPage = Math.min(
+    totalPages - 1,
+    currentPage + Math.floor(maxPagesToShow / 2)
+  );
+
+  if (currentPage <= Math.ceil(maxPagesToShow / 2) + 1) {
+    endPage = maxPagesToShow;
+  } else if (currentPage >= totalPages - Math.floor(maxPagesToShow / 2)) {
+    startPage = totalPages - maxPagesToShow + 1;
+  }
+
+  if (startPage > 2) {
+    pageNumbers.push("...");
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    pageNumbers.push(i);
+  }
+
+  if (endPage < totalPages - 1) {
+    pageNumbers.push("...");
+  }
+
+  if (totalPages > 1) {
+    pageNumbers.push(totalPages);
+  }
+}
+---
+
+<nav class="pagination" aria-label="Pagination">
+  <ul class="pagination-list flex items-center gap-2 justify-center">
+    <li>
+      <a
+        href={currentPage > 1 ? getPageLink(currentPage - 1) : "#"}
+        class:list={[
+          "pagination-link",
+          "pagination-prev",
+          { "disabled opacity-50 pointer-events-none": currentPage === 1 },
+        ]}
+        aria-label="Previous Page"
+      >
+        &larr; Previous
+      </a>
+    </li>
+
+    {
+      pageNumbers.map((page) => (
+        <li>
+          {page === "..." ? (
+            <span class="pagination-ellipsis">...</span>
+          ) : (
+            <a
+              href={getPageLink(page)}
+              class:list={[
+                "pagination-link",
+                { "pagination-active": page === currentPage },
+              ]}
+              aria-current={page === currentPage ? "page" : undefined}
+              aria-label={`Page ${page}`}
+            >
+              {page}
+            </a>
+          )}
+        </li>
+      ))
+    }
+
+    <li>
+      <a
+        href={currentPage < totalPages ? getPageLink(currentPage + 1) : "#"}
+        class:list={[
+          "pagination-link",
+          "pagination-next",
+          {
+            "disabled opacity-50 pointer-events-none":
+              currentPage === totalPages,
+          },
+        ]}
+        aria-label="Next Page"
+      >
+        Next &rarr;
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-bottom: 2rem;
+  }
+
+  .pagination-list {
+    display: flex;
+    list-style: none;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pagination-link,
+  .pagination-ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #d1d5db;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+  }
+
+  .pagination-link:hover {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: #4ade80;
+    color: #4ade80;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 222, 128, 0.2);
+  }
+
+  .pagination-active {
+    background: linear-gradient(45deg, #1a4d3a, #4ade80);
+    border-color: #4ade80;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 5px 15px rgba(74, 222, 128, 0.3);
+    pointer-events: none; /* Disable clicks on active page */
+  }
+
+  .pagination-prev,
+  .pagination-next {
+    min-width: unset;
+    padding: 0 20px;
+  }
+
+  .pagination-ellipsis {
+    background: transparent;
+    border: none;
+    cursor: default;
+    color: #9ca3af;
+  }
+
+  @media (max-width: 480px) {
+    .pagination-link,
+    .pagination-ellipsis {
+      min-width: 36px;
+      height: 36px;
+      padding: 0 10px;
+      font-size: 0.9rem;
+    }
+    .pagination-list {
+      gap: 0.5rem;
+    }
+  }
+</style>

@@ -274,7 +274,7 @@ main {
 
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, 350px);
   gap: 2rem;
   margin-bottom: 3rem;
 }
@@ -531,7 +531,7 @@ main {
 
 .blog-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, 350px);
   gap: 2rem;
   margin-bottom: 3rem;
 }

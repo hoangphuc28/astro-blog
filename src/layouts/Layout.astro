@@ -66,12 +66,18 @@ const { title } = Astro.props;
           hero.style.transform = `translateY(${scrolled * 0.5}px)`;
         }
       });
+
       document.addEventListener("DOMContentLoaded", () => {
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll(".nav-links a");
 
         navLinks.forEach((link) => {
-          if (link.getAttribute("href") === currentPath) {
+          const linkPath = link.getAttribute("href");
+          if(linkPath)
+            if (
+            currentPath === linkPath ||
+            (linkPath !== "/" && currentPath.startsWith(linkPath))
+          ) {
             link.classList.add("active");
           }
         });
