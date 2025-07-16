@@ -1,9 +1,17 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { date } from 'astro:schema';
 
-
-type Props = CollectionEntry<'articles'>;
-const props = Astro.props;
+type Props = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  date: string;
+  content: string;
+};
+// type Props = CollectionEntry<'articles'>;
+const props: Props = Astro.props;
 ---
 <section class="section detailed-article">
   <div class="container">
@@ -13,11 +21,14 @@ const props = Astro.props;
 
     <div class="article-content">
       <div class="article-header">
-        <h2>{props?.data?.title}</h2>
-        <p class="article-date">Published: {props?.data?.date}</p>
+        <h2>{props?.title}</h2>
+        <p class="article-date">Published: {props?.date}</p>
       </div>
       <div class="article-body">
-        <slot />
+        <div class="article-excerpt">
+          <p>{props?.excerpt}</p>
+        </div>
+        <div class="article-full-content" set:html={props?.content}></div>
       </div>
     </div>
   </div>

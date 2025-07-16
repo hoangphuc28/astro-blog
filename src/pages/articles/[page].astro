@@ -3,9 +3,10 @@ import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/Header.astro";
 import { getCollection } from "astro:content";
 import Pagination from "../../components/Pagination.astro";
-
+import { getArticles } from "../../lib/notion";
 export async function getStaticPaths() {
-  const articles = await getCollection("articles");
+  // const articles = await getCollection("articles");
+  const articles = await getArticles();
 
   const postsPerPage = 6; // Number of articles per page
   const totalPages = Math.ceil(articles.length / postsPerPage);
@@ -44,12 +45,12 @@ const { articlesForPage, currentPage, totalPages } = Astro.props;
       </p>
       <div class="blog-grid">
         {
-          articlesForPage.map((article) => (
+          articlesForPage?.map((article) => (
             <article class="article-card">
-              <h3 class="article-title">{article.data.title}</h3>
-              <p class="article-excerpt">{article.data.excerpt}</p>
+              <h3 class="article-title">{article.title}</h3>
+              <p class="article-excerpt">{article.excerpt}</p>
               <div class="article-footer">
-                <p class="article-date">Published: {article.data.date}</p>
+                <p class="article-date">Published: {article.date}</p>
                 <a href={`/articles/${article.slug}`} class="btn btn-details">
                   Details
                 </a>
