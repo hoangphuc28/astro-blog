@@ -2,6 +2,8 @@
 
 A modern, animated personal portfolio and blog built with [Astro](https://astro.build/). This project features a beautiful UI, article pagination, Notion integration for dynamic content, and a contact form.
 
+🔗 **Live Demo:** [https://astro-blog-sigma-nine.vercel.app/](https://astro-blog-sigma-nine.vercel.app/)
+
 ## ✨ Features
 
 - ⚡ Fast, SEO-friendly static site
@@ -85,11 +87,6 @@ For Vercel deployment, install the adapter:
 npm install @astrojs/vercel
 ```
 And follow [Astro’s Vercel deployment guide](https://docs.astro.build/en/guides/deploy/vercel/).
-
-## 🙏 Credits
-- Built with [Astro](https://astro.build/)
-- Notion integration via [@notionhq/client](https://github.com/makenotion/notion-sdk-js) and [notion-to-md](https://github.com/anshumanv/notion-to-md)
-- Inspired by Bear Blog and Astro’s official blog starter
 
 ---
 Feel free to customize this project and make it your own!
